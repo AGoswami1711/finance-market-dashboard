@@ -1,3 +1,4 @@
+🔗 [Click here to launch the Live Interactive Dashboard](https://streamlit.app)
 # 📈 Real-Time Finance Market Dashboard
 This application provides real-time market data extraction for stock and crypto assets. Built for clients needing fast, reliable financial insights.
 
