@@ -3,7 +3,7 @@ import yfinance as yf
 import plotly.express as px
 import pandas as pd
 
-# 1. Page Configuration (Looks professional on GitHub demos)
+# 1. Page Configuration
 st.set_page_config(page_title="Professional Finance Dashboard", layout="wide")
 
 st.title("📈 Real-Time Finance Tracker & Data Exporter")
@@ -14,13 +14,16 @@ st.sidebar.header("Dashboard Controls")
 ticker = st.sidebar.text_input("Stock/Crypto Symbol", value="BTC-USD")
 period = st.sidebar.selectbox("Select Time Period", options=["1mo", "3mo", "6mo", "1y", "5y", "max"])
 
-# 3. Data Extraction using yfinance
+# 3. Data Extraction (Updated for reliability)
 data = yf.download(ticker, period=period, interval="1d")
 
 if not data.empty:
-    # Get the latest price metrics
-    last_price = data['Close'].iloc[-1]
-    prev_price = data['Close'].iloc[-2]
+    # Get the 'Close' column safely
+    close_data = data['Close']
+    
+    # Get the latest price values and convert to float
+    last_price = float(close_data.iloc[-1])
+    prev_price = float(close_data.iloc[-2])
     price_diff = last_price - prev_price
 
     # 4. Display KPI Metrics
@@ -31,7 +34,7 @@ if not data.empty:
     fig = px.line(data, x=data.index, y='Close', title=f"{ticker} Historical Trend")
     st.plotly_chart(fig, use_container_width=True)
 
-    # 6. Data Export (Critical Freelance Skill)
+    # 6. Data Export
     st.subheader("Data Export Center")
     csv = data.to_csv().encode('utf-8')
     st.download_button(
